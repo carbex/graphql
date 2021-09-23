@@ -1,16 +1,20 @@
+const article = require("../../models/article")
 const Article = require("../../models/article")
 
 module.exports = {
-  articles: async () => {
+  getAllArticles: async () => {
     try {
       const articlesFetched = await Article.find()
-      return articlesFetched.map(article => {
-        return {
-          ...article._doc,
-          _id: article.id,
-          createdAt: new Date(article._doc.createdAt).toISOString(),
-        }
-      })
+      return articlesFetched
+    } catch (error) {
+      throw error
+    }
+  },
+
+  getArticleById: async ({ _id }) => {
+    try {
+      const articleFetched = await Article.findOne({ _id })
+      return articleFetched
     } catch (error) {
       throw error
     }
@@ -24,9 +28,20 @@ module.exports = {
         body,
       })
       const newArticle = await article.save()
-      return { ...newArticle._doc, _id: newArticle.id }
+      return newArticle
     } catch (error) {
       throw error
     }
   },
+
+  deleteArticleById: async ({ _id }) => {
+    try {
+      const deletedArticle = await article.deleteOne({ _id})
+      if(deletedArticle.deletedCount === 1) {
+        return true
+      }
+    } catch (error) {
+      throw error
+    }
+  }
 }

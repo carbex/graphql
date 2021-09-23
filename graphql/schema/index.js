@@ -16,11 +16,13 @@ module.exports = buildSchema(`
   }
 
   type Query {
-    articles:[Article!]
+    getAllArticles:[Article!]
+    getArticleById(_id: ID!): Article!
   }
 
   type Mutation {
-    createArticle(article:ArticleInput): Article
+    createArticle(article:ArticleInput): Article!
+    deleteArticleById(_id: ID!): Boolean!
   }
 
   schema {
